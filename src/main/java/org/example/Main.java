@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.businesslogic.TasksManagement;
 import org.example.businesslogic.Utility;
+import org.example.dataaccess.SerializationService;
 import org.example.model.ComplexTask;
 import org.example.model.Employee;
 import org.example.model.SimpleTask;
@@ -55,5 +56,22 @@ public class Main {
         for(Map.Entry<Employee, Map<String, Integer>> entry : statistics.entrySet()) {
             System.out.println(entry.getKey().getName() + " -> " + entry.getValue());
         }
+
+        SerializationService service = new SerializationService();
+
+        try{
+            service.save(tasksManagement, "data.ser");
+
+            TasksManagement loaded = service.load("data.ser");
+
+            System.out.println("Loaded duration: " +
+                    loaded.calculateEmployeeWorkDuration(1));
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+
     }
 }

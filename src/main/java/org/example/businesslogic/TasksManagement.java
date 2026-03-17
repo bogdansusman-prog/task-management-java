@@ -3,9 +3,10 @@ package org.example.businesslogic;
 import org.example.model.Employee;
 import org.example.model.Task;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class TasksManagement {
+public class TasksManagement implements Serializable {
     private Map<Employee, List<Task>> employeeTasks;
 
     public TasksManagement() {
