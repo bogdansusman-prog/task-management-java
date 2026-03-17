@@ -1,17 +1,59 @@
 package org.example;
 
+import org.example.businesslogic.TasksManagement;
+import org.example.businesslogic.Utility;
+import org.example.model.ComplexTask;
+import org.example.model.Employee;
+import org.example.model.SimpleTask;
+
+import java.util.List;
+import java.util.Map;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+    public static void main(String[] args) {
+        TasksManagement tasksManagement = new TasksManagement();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+        Employee employee1 = new Employee(1, "Bogdan");
+        Employee employee2 = new Employee(2, "Mara");
+
+        tasksManagement.addEmployee(employee1);
+        tasksManagement.addEmployee(employee2);
+
+        SimpleTask simpleTask1 = new SimpleTask(101, "Completed", 8, 16);
+        //8 ore
+        SimpleTask simpleTask2 = new SimpleTask(102, "Completed", 9, 17);
+        //8 ore
+        SimpleTask simpleTask3 = new SimpleTask(103, "Uncompleted", 10, 18);
+        //8 ore
+
+        ComplexTask complexTask1 = new ComplexTask(201, "Completed");
+        complexTask1.addTask(new SimpleTask(104, "Completed", 8, 20)); // 12 ore
+        complexTask1.addTask(new SimpleTask(105, "Completed", 9, 21)); // 12 ore
+
+        tasksManagement.assignTaskToEmployee(1, simpleTask1);
+        tasksManagement.assignTaskToEmployee(1, simpleTask2);
+        tasksManagement.assignTaskToEmployee(1, complexTask1);
+
+        tasksManagement.assignTaskToEmployee(2, simpleTask3);
+
+        System.out.println("===== DURATA MUNCA =======");
+        System.out.println("Employee 1 duration: " +
+                tasksManagement.calculateEmployeeWorkDuration(1));
+        System.out.println("Employee 2 duration " +
+                tasksManagement.calculateEmployeeWorkDuration(2));
+
+        System.out.println("\n========= EMPLOYEES > 40 HOURS =======");
+        List<Employee> employeesOver40 = Utility.filterEmployeesWorkedMoreThan40Hours(tasksManagement);
+        for(Employee employee : employeesOver40) {
+            System.out.println(employee);
+        }
+
+        System.out.println("\n========== TASK STATISTICS ========");
+        Map<Employee, Map<String, Integer>> statistics = Utility.createTaskStatistics(tasksManagement);
+        for(Map.Entry<Employee, Map<String, Integer>> entry : statistics.entrySet()) {
+            System.out.println(entry.getKey().getName() + " -> " + entry.getValue());
         }
     }
 }
