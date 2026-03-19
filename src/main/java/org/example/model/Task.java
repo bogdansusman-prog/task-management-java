@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.io.Serializable;
 
-public abstract class Task implements Serializable {
+sealed public abstract class Task implements Serializable permits ComplexTask, SimpleTask {
     private int idTask;
     private String statusTask;
 

@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class SimpleTask extends Task {
+public final class SimpleTask extends Task {
     private int startHour;
     private int endHour;
 
