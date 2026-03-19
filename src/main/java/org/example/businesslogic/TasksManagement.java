@@ -25,6 +25,7 @@ public class TasksManagement implements Serializable {
         for(Employee employee : employeeTasks.keySet()) {
             if(employee.getIdEmployee()==idEmployee) {
                 employeeTasks.get(employee).add(task);
+                //
                 return;
             }
         }
@@ -36,7 +37,7 @@ public class TasksManagement implements Serializable {
             if(employee.getIdEmployee()==idEmployee) {
                 int total = 0;
                 for(Task task : employeeTasks.get(employee)) {
-                    if("Completed".equalsIgnoreCase(task.getStatusTask())){
+                     if("Completed".equalsIgnoreCase(task.getStatusTask())){
                         total+=task.estimateDuration();
                     }
                 }
