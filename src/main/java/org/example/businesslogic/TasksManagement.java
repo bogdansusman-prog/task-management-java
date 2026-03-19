@@ -7,25 +7,32 @@ import java.io.Serializable;
 import java.util.*;
 
 public class TasksManagement implements Serializable {
+    // initializam o variabila de tip map care are in interior si o lista...
+    //de ce? Pentru ca noi vrem sa vedem la angajat employee si "lista" acestuia de task-uri
     private Map<Employee, List<Task>> employeeTasks;
 
     public TasksManagement() {
         employeeTasks = new HashMap<>();
     }
 
+
     public Map<Employee, List<Task>> getEmployeeTasks() {
         return employeeTasks;
     }
 
+    // adauga un angajat daca nu exista deja
     public void addEmployee(Employee employee) {
         employeeTasks.putIfAbsent(employee, new ArrayList<>());
+
     }
+
 
     public void assignTaskToEmployee(int idEmployee, Task task) {
         for(Employee employee : employeeTasks.keySet()) {
+            //cautam angajatul dupa id-ul specific acestuia
             if(employee.getIdEmployee()==idEmployee) {
+                //adaugam taskul
                 employeeTasks.get(employee).add(task);
-                //
                 return;
             }
         }

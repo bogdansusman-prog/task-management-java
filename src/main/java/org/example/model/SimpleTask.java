@@ -1,6 +1,8 @@
 package org.example.model;
 
+//clasa finala deoarece Task este sealed
 public final class SimpleTask extends Task {
+
     private int startHour;
     private int endHour;
 
@@ -31,8 +33,13 @@ public final class SimpleTask extends Task {
 
     @Override
     public int estimateDuration() {
-        int hours = endHour - startHour;
-        return hours;
+        // a task can start today and end tomorrow. eg start = 23, end = 2 => total time = 3
+        if(endHour>=startHour){
+            return endHour-startHour;
+        }
+        else {
+            return (24-startHour)+endHour;
+        }
     }
 
     @Override

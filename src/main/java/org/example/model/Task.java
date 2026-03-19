@@ -31,5 +31,6 @@ sealed public abstract class Task implements Serializable permits ComplexTask, S
         this.statusTask = statusTask;
     }
 
+    //clasa abstracta => metoda abastracta(o folosim in SimpleTask si in ComplexTask
     public abstract int estimateDuration();
 }

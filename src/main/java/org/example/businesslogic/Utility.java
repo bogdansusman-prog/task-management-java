@@ -12,12 +12,12 @@ public class Utility {
 
         for(Map.Entry<Employee, List<Task>> entry : tasksManagement.getEmployeeTasks().entrySet()){
             int total = 0;
-            for(Task task : entry.getValue()){
-                if("Completed".equalsIgnoreCase(task.getStatusTask())){
-                    total+=task.estimateDuration();
-                }
-            }
-
+//            for(Task task : entry.getValue()){
+//                if("Completed".equalsIgnoreCase(task.getStatusTask())){
+//                    total+=task.estimateDuration();
+//                }
+//            }
+            // ai deja o metoda care face asta
             if(total>40){
                 workedTime.add(new AbstractMap.SimpleEntry<>(entry.getKey(), total));
             }
