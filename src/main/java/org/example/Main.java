@@ -52,9 +52,14 @@ public class Main {
         }
 
         System.out.println("\n========== TASK STATISTICS ========");
-        Map<Employee, Map<String, Integer>> statistics = Utility.createTaskStatistics(tasksManagement);
-        for(Map.Entry<Employee, Map<String, Integer>> entry : statistics.entrySet()) {
-            System.out.println(entry.getKey().getName() + " -> " + entry.getValue());
+        Map<String, Map<String, Integer>> statistics = Utility.createTaskStatistics(tasksManagement);
+
+        for (Map.Entry<String, Map<String, Integer>> entry : statistics.entrySet()) {
+            System.out.println("Employee: " + entry.getKey());
+
+            for (Map.Entry<String, Integer> stat : entry.getValue().entrySet()) {
+                System.out.println(stat.getKey() + ": " + stat.getValue());
+            }
         }
 
         SerializationService service = new SerializationService();
