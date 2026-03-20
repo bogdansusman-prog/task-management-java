@@ -21,16 +21,30 @@ public class TasksManagement implements Serializable {
     }
 
     // adauga un angajat daca nu exista deja
+    //public void addEmployee(Employee employee) {
+    //    employeeTasks.putIfAbsent(employee, new ArrayList<>());
+    //}
+    //abordez altfel(de la mine de data asta)
     public void addEmployee(Employee employee) {
-        employeeTasks.putIfAbsent(employee, new ArrayList<>());
-
+        for(Employee existingEmployee : employeeTasks.keySet()){
+            if(existingEmployee.getIdEmployee() ==  employee.getIdEmployee()){
+                throw new IllegalArgumentException("Employee already exists");
+            }
+        }
+        employeeTasks.put(employee, new ArrayList<>());
     }
-
+    //am facut altcumva decat putIfAbsent... pot explica mai logic acum ce se intampla
 
     public void assignTaskToEmployee(int idEmployee, Task task) {
         for(Employee employee : employeeTasks.keySet()) {
             //cautam angajatul dupa id-ul specific acestuia
             if(employee.getIdEmployee()==idEmployee) {
+                //verificam daca nu are deja angajatul acel task pe care noi vrem sa i-l signam
+                for(Task existingTask : employeeTasks.get(employee)) {
+                    if(existingTask.getIdTask() == task.getIdTask()) {
+                        throw new IllegalArgumentException("Task already already assigned to this employee");
+                    }
+                }
                 //adaugam taskul
                 employeeTasks.get(employee).add(task);
                 return;
@@ -39,10 +53,14 @@ public class TasksManagement implements Serializable {
         throw new IllegalArgumentException("Employee not found");
     }
 
+
+    //metoda folosita in Utility
     public int calculateEmployeeWorkDuration(int idEmployee){
+        //caut angajatul dupa id
         for(Employee employee : employeeTasks.keySet()) {
             if(employee.getIdEmployee()==idEmployee) {
                 int total = 0;
+                //suma duratiilor doar pentru task-urile notate Completed
                 for(Task task : employeeTasks.get(employee)) {
                      if("Completed".equalsIgnoreCase(task.getStatusTask())){
                         total+=task.estimateDuration();
@@ -55,16 +73,22 @@ public class TasksManagement implements Serializable {
     }
 
     public void modifyTaskStatus(int idEmployee, int idTask) {
+        //caut angajatu dupa id
         for (Employee employee : employeeTasks.keySet()) {
             if (employee.getIdEmployee() == idEmployee) {
+                //caut task-urile asignate la angajatul cautat
                 for (Task task : employeeTasks.get(employee)) {
                     if (task.getIdTask() == idTask) {
+                        //schimb statusul
                         if ("Completed".equalsIgnoreCase(task.getStatusTask())) {
                             task.setStatusTask("Uncompleted");
-                        } else {
+                        } else if ("Uncompleted".equalsIgnoreCase(task.getStatusTask())) {
                             task.setStatusTask("Completed");
+                        } else {
+                            //defensive check derigoare(il fac cu JDialog dragut)
+                            throw new IllegalArgumentException("Invalid task status:  " + task.getStatusTask());
                         }
-                        return;
+                        return; //opresc modificarea
                     }
                 }
                 throw new IllegalArgumentException("Task not found");
