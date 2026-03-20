@@ -11,6 +11,12 @@ public final class SimpleTask extends Task {
 
     public SimpleTask(int idTask, String statusTask, int startHour,int endHour) {
         super(idTask, statusTask);
+        if(startHour < 0 || startHour > 23){
+            throw new IllegalArgumentException("Invalid start hour");
+        }
+        if(endHour < 0 || endHour > 23){
+            throw new IllegalArgumentException("Invalid end hour");
+        }
         this.startHour = startHour;
         this.endHour = endHour;
     }
@@ -38,6 +44,7 @@ public final class SimpleTask extends Task {
             return endHour-startHour;
         }
         else {
+            //adaugat!
             return (24-startHour)+endHour;
         }
     }

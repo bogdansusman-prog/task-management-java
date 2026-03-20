@@ -17,11 +17,23 @@ public final class ComplexTask extends Task{
     }
     //adaug in lista Task-ul dorit
     public void addTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
+        if (task == this) {
+            throw new IllegalArgumentException("A complex task cannot be the same or contain itself");
+        }
+
+        for(Task existingTask : tasks) {
+            if (existingTask.getIdTask() == task.getIdTask()) {
+                throw new IllegalArgumentException("Task already exists in complex task");
+            }
+        }
         tasks.add(task);
     }
 
     //elimin din lista Task-ul dorit
-    public void removeTask(Task task) {
+    public void deleteTask(Task task) {
         tasks.remove(task);
     }
 
@@ -29,6 +41,9 @@ public final class ComplexTask extends Task{
         return tasks;
     }
 
+    public  void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 
     @Override
     public int estimateDuration() {
