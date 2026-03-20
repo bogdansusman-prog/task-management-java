@@ -26,6 +26,9 @@ public final class SimpleTask extends Task {
     }
 
     public void setStartHour(int startHour) {
+        if(startHour < 0 || startHour > 23){
+            throw new IllegalArgumentException("Invalid start hour");
+        }
         this.startHour = startHour;
     }
 
@@ -34,6 +37,9 @@ public final class SimpleTask extends Task {
     }
 
     public void setEndHour(int endHour) {
+        if(endHour < 0 || endHour > 23){
+            throw new IllegalArgumentException("Invalid end hour");
+        }
         this.endHour = endHour;
     }
 

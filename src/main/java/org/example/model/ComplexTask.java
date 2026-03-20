@@ -34,7 +34,21 @@ public final class ComplexTask extends Task{
 
     //elimin din lista Task-ul dorit
     public void deleteTask(Task task) {
-        tasks.remove(task);
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
+        Task taskToDelete = null;
+
+        for(Task existingTask : tasks) {
+            if (existingTask.getIdTask() == task.getIdTask()) {
+                taskToDelete = existingTask;
+                break;
+            }
+        }
+        if(taskToDelete == null) {
+            throw new IllegalArgumentException("Task does not exist in complex task");
+        }
+        tasks.remove(taskToDelete);
     }
 
     public List<Task> getTasks() {
