@@ -34,8 +34,12 @@ public class MainFrame extends JFrame {
             Employee employee = new Employee(id, name);
             tasksManagement.addEmployee(employee);
 
+
+            employeeIdField.setText("");
+            employeeNameField.setText("");
+
             //pastrez istoricul
-            employeesOutputArea.append("Employee: " + employee + " added successfully!");
+            employeesOutputArea.append("Employee: " + employee + " added successfully!\n");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
