@@ -1,4 +1,4 @@
-package org.example;
+package org.example.tests;
 
 import org.example.businesslogic.TasksManagement;
 import org.example.gui.MainFrame;

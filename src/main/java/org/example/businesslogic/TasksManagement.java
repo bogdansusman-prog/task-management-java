@@ -4,9 +4,13 @@ import org.example.model.Employee;
 import org.example.model.Task;
 
 import java.io.Serializable;
+import java.io.Serial;
 import java.util.*;
 
 public class TasksManagement implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     // initializam o variabila de tip map care are in interior si o lista...
     //de ce? Pentru ca noi vrem sa vedem la angajat employee si "lista" acestuia de task-uri
     private Map<Employee, List<Task>> employeeTasks;

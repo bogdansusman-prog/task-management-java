@@ -1,8 +1,12 @@
 package org.example.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 sealed public abstract class Task implements Serializable permits ComplexTask, SimpleTask {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int idTask;
     private String statusTask;
 

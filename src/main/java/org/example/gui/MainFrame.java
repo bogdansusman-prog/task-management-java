@@ -5,9 +5,12 @@ import org.example.model.ComplexTask;
 import org.example.model.Employee;
 import org.example.model.SimpleTask;
 import org.example.model.Task;
+import org.example.businesslogic.Utility;
+import org.example.dataaccess.SerializationService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 
 
@@ -29,7 +32,7 @@ public class MainFrame extends JFrame {
     private JTextField complexTaskIdField;
     private JTextField complexTaskStatusField;
     private JButton createComplexTaskButton;
-    private JTextArea taskOutputArea;
+    //private JTextArea taskOutputArea;
     private JPanel employeesPanel;
     private JPanel taskPanel;
     private JList<Employee> employeesList;
@@ -38,7 +41,12 @@ public class MainFrame extends JFrame {
     private JButton modifyStatusButton;
     private JButton calculateDurationButton;
     private JTextArea assignOutputArea;
+    private JButton showEmployeesOver40Button;
+    private JButton showTaskStatisticsButton;
+    private JTextArea statisticsOutputArea;
     private JTextArea tasksOutputArea;
+    private JButton saveButton;
+    private JButton loadButton;
 
     private Map<Integer, Task> allTasks;
     private DefaultListModel<Employee> employeesListModel;
@@ -68,6 +76,12 @@ public class MainFrame extends JFrame {
         assignTaskButton.addActionListener(e -> assignTask());
         modifyStatusButton.addActionListener(e -> modifyTaskStatus());
         calculateDurationButton.addActionListener(e -> calculateDuration());
+
+        showEmployeesOver40Button.addActionListener(e -> showEmployeesOver40());
+        showTaskStatisticsButton.addActionListener(e -> showTaskStatistics());
+
+        saveButton.addActionListener(e -> saveData());
+        loadButton.addActionListener(e -> loadData());
     }
 
     private void addEmployee() {
@@ -138,11 +152,57 @@ public class MainFrame extends JFrame {
     }
 
     private void assignTask() {
+        try{
+            Employee employee = employeesList.getSelectedValue();
+            Task task = tasksList.getSelectedValue();
 
+            if (employee == null) {
+                throw new  IllegalArgumentException("Employee is required!");
+            }
+
+            if (task == null) {
+                throw new  IllegalArgumentException("Task is required!");
+            }
+
+            tasksManagement.assignTaskToEmployee(employee.getIdEmployee(), task);
+
+            assignOutputArea.append("Assigned task " + task.getIdTask() +
+                    " to employee " + employee.getName() + "\n");
+
+            employeesList.clearSelection();
+            tasksList.clearSelection();
+
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 
     private void modifyTaskStatus() {
+        try{
+            Employee employee = employeesList.getSelectedValue();
+            Task task = tasksList.getSelectedValue();
 
+            if (employee == null) {
+                throw new  IllegalArgumentException("Employee is required!");
+            }
+
+            if (task == null) {
+                throw new  IllegalArgumentException("Task is required!");
+            }
+
+            tasksManagement.modifyTaskStatus(employee.getIdEmployee(), task.getIdTask());
+
+            assignOutputArea.append("Modified status for task " + task.getIdTask() +
+                    " of employee " + employee.getName() + "\n");
+
+            employeesList.clearSelection();
+            tasksList.clearSelection();
+
+            tasksList.repaint();
+            employeesList.repaint();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 
     private void calculateDuration() {
@@ -162,5 +222,99 @@ public class MainFrame extends JFrame {
         }
     }
 
+    private void showEmployeesOver40() {
+        try{
+            statisticsOutputArea.setText("");
 
+            List<Employee> employees = Utility.filterEmployeesWorkedMoreThan40Hours(tasksManagement);
+
+            if(employees.isEmpty()){
+                statisticsOutputArea.append("No employees have worked more than 40 hours\n");
+                return;
+            }
+
+            statisticsOutputArea.append("Employees with more than 40 worked hours\n");
+            for(Employee employee : employees){
+                statisticsOutputArea.append(employee.toString() + "\n");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void showTaskStatistics() {
+        try{
+            statisticsOutputArea.setText("");
+
+            Map<String, Map<String, Integer>> statistics = Utility.createTaskStatistics(tasksManagement);
+
+            if(statistics.isEmpty()){
+                statisticsOutputArea.append("No statistics available.\n");
+                return;
+            }
+
+            statisticsOutputArea.append("Task statistics:\n");
+            for(Map.Entry<String, Map<String, Integer>> entry : statistics.entrySet()){
+                statisticsOutputArea.append("Employee " + entry.getKey() + ":\n");
+
+                for(Map.Entry<String, Integer> stat : entry.getValue().entrySet()){
+                    statisticsOutputArea.append("  " +  stat.getKey() + ": " + stat.getValue() + "\n");
+                }
+                statisticsOutputArea.append("\n");
+            }
+
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void saveData(){
+        try{
+            SerializationService service = new SerializationService();
+            service.save(tasksManagement, "data.ser");
+
+            JOptionPane.showMessageDialog(this, "Data Saved!\n");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void loadData(){
+        try{
+            SerializationService service = new SerializationService();
+            TasksManagement loaded = service.load("data.ser");
+
+            this.tasksManagement = loaded;
+
+            refreshUIAfterLoad();
+
+            JOptionPane.showMessageDialog(this, "Data Loaded!\n");
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void refreshUIAfterLoad(){
+        employeesListModel.clear();
+        tasksListModel.clear();
+        allTasks.clear();
+
+        for(Map.Entry<Employee, List<Task>> entry : tasksManagement.getEmployeeTasks().entrySet()){
+            Employee employee = entry.getKey();
+            employeesListModel.addElement(employee);
+
+            for(Task task : entry.getValue()){
+                allTasks.put(task.getIdTask(), task);
+
+                if(!tasksListModel.contains(task)){
+                    tasksListModel.addElement(task);
+                }
+            }
+        }
+
+        employeesOutputArea.setText("");
+        tasksOutputArea.setText("");
+        assignOutputArea.setText("");
+        statisticsOutputArea.setText("");
+    }
 }

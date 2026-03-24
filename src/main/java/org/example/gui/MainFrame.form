@@ -216,7 +216,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="f615d" class="javax.swing.JTextArea" binding="taskOutputArea">
+                  <component id="f615d" class="javax.swing.JTextArea" binding="tasksOutputArea">
                     <constraints/>
                     <properties/>
                   </component>
@@ -338,14 +338,60 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="a2952" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="a2952" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Statistisc"/>
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <component id="142e9" class="javax.swing.JButton" binding="showEmployeesOver40Button">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Show Employees &gt; 40 Hours"/>
+                </properties>
+              </component>
+              <component id="31332" class="javax.swing.JButton" binding="showTaskStatisticsButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Show Task Statistics"/>
+                </properties>
+              </component>
+              <scrollpane id="e3c0d">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ce2d2" class="javax.swing.JTextArea" binding="statisticsOutputArea">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="12850" class="javax.swing.JButton" binding="loadButton">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Load Data"/>
+                </properties>
+              </component>
+              <component id="c488b" class="javax.swing.JButton" binding="saveButton">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Save Data"/>
+                </properties>
+              </component>
+            </children>
           </grid>
         </children>
       </tabbedpane>

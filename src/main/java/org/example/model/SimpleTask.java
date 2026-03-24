@@ -1,7 +1,11 @@
 package org.example.model;
 
+import java.io.Serial;
+
 //clasa finala deoarece Task este sealed
 public final class SimpleTask extends Task {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int startHour;
     private int endHour;
