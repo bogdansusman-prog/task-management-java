@@ -47,13 +47,22 @@ public class MainFrame extends JFrame {
     private JTextArea tasksOutputArea;
     private JButton saveButton;
     private JButton loadButton;
+    private JComboBox<Task> complexTaskComboBox;
+    private JComboBox<Task> subTaskComboBox;
+    private JButton addSubtaskButton;
 
     private Map<Integer, Task> allTasks;
     private DefaultListModel<Employee> employeesListModel;
     private DefaultListModel<Task> tasksListModel;
+    private DefaultComboBoxModel<Task> subTaskComboBoxModel;
+    private DefaultComboBoxModel<Task> complexTaskComboBoxModel;
 
 
     public MainFrame(TasksManagement tasksManagement) {
+        complexTaskComboBoxModel = new DefaultComboBoxModel<>();
+        subTaskComboBoxModel = new DefaultComboBoxModel<>();
+
+
         this.tasksManagement = tasksManagement;
         this.allTasks = new HashMap<>();
 
@@ -68,6 +77,8 @@ public class MainFrame extends JFrame {
 
         employeesList.setModel(employeesListModel);
         tasksList.setModel(tasksListModel);
+        complexTaskComboBox.setModel(complexTaskComboBoxModel);
+        subTaskComboBox.setModel(subTaskComboBoxModel);
 
         addEmployeeButton.addActionListener(e -> addEmployee());
         createSimpleTaskButton.addActionListener(e -> createSimpleTask());
@@ -79,6 +90,8 @@ public class MainFrame extends JFrame {
 
         showEmployeesOver40Button.addActionListener(e -> showEmployeesOver40());
         showTaskStatisticsButton.addActionListener(e -> showTaskStatistics());
+
+        addSubtaskButton.addActionListener(e -> addSubtaskToComplexTask());
 
         saveButton.addActionListener(e -> saveData());
         loadButton.addActionListener(e -> loadData());
@@ -119,6 +132,7 @@ public class MainFrame extends JFrame {
             allTasks.put(id, task);
             tasksListModel.addElement(task);
 
+            subTaskComboBoxModel.addElement(task);
             tasksOutputArea.append("Simple task: " + task + " created!\n");
 
             simpleTaskIdField.setText("");
@@ -142,6 +156,8 @@ public class MainFrame extends JFrame {
             allTasks.put(id, task);
             tasksListModel.addElement(task);
 
+            complexTaskComboBoxModel.addElement(task);
+            subTaskComboBoxModel.addElement(task);
             tasksOutputArea.append("Complex task: " + task + " created!\n");
 
             complexTaskIdField.setText("");
@@ -311,10 +327,43 @@ public class MainFrame extends JFrame {
                 }
             }
         }
-
         employeesOutputArea.setText("");
         tasksOutputArea.setText("");
         assignOutputArea.setText("");
         statisticsOutputArea.setText("");
     }
+
+    private void addSubtaskToComplexTask(){
+        try{
+            Task selectedComplex = (Task) complexTaskComboBox.getSelectedItem();
+            Task selectedSubtask = (Task) subTaskComboBox.getSelectedItem();
+
+            if(selectedComplex == null)
+            {
+                throw new IllegalArgumentException("Select a complex task");
+            }
+            if(selectedSubtask == null)
+            {
+                throw new IllegalArgumentException("Select a subtask");
+            }
+            if(!(selectedComplex instanceof ComplexTask)){
+                throw new IllegalArgumentException("Selected task is not a complex task");
+            }
+            if(selectedComplex == selectedSubtask){
+                throw new IllegalArgumentException("Task cannot contain itself");
+            }
+
+            ComplexTask complexTask = (ComplexTask) selectedComplex;
+            if(complexTask.getTasks().contains(selectedSubtask)){
+                throw new IllegalArgumentException("Subtask already added");
+            }
+            //am terminat cu erorile
+            complexTask.addTask(selectedSubtask);
+            tasksOutputArea.append("Added task " + selectedSubtask.getIdTask() +
+                    " to complex task " + complexTask.getIdTask() + "\n");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
 }
