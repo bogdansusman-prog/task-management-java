@@ -89,7 +89,6 @@ public class TasksManagement implements Serializable {
                         } else if ("Uncompleted".equalsIgnoreCase(task.getStatusTask())) {
                             task.setStatusTask("Completed");
                         } else {
-                            //defensive check derigoare(il fac cu JDialog dragut)
                             throw new IllegalArgumentException("Invalid task status:  " + task.getStatusTask());
                         }
                         return; //opresc modificarea
