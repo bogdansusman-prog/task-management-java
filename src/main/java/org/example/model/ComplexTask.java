@@ -74,6 +74,21 @@ public final class ComplexTask extends Task{
         return total;
     }
 
+    public void setStatusRecursively(String status) {
+        // schimb statusul task-ului curent
+        setStatusTask(status);
+
+        // propag statusul către toate subtask-urile
+        for (Task task : tasks) {
+            task.setStatusTask(status);
+
+            // dacă subtask-ul este tot complex, continui recursiv
+            if (task instanceof ComplexTask) {
+                ((ComplexTask) task).setStatusRecursively(status);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "ComplexTask{" +
