@@ -100,4 +100,13 @@ public class TasksManagement implements Serializable {
         throw new IllegalArgumentException("Employee not found");
     }
 
+    public int calculateEmployeeWorkDurationByName(String name) {
+        for(Employee e : employeeTasks.keySet()) {
+            if(e.getName().equals(name)) {
+                return calculateEmployeeWorkDuration(e.getIdEmployee());
+            }
+        }
+        return 0;
+    }
+
 }

@@ -8,6 +8,7 @@ import org.example.model.Task;
 import org.example.businesslogic.Utility;
 import org.example.dataaccess.SerializationService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -262,7 +263,8 @@ public class MainFrame extends JFrame {
         try{
             statisticsOutputArea.setText("");
 
-            Map<String, Map<String, Integer>> statistics = Utility.createTaskStatistics(tasksManagement);
+            Map<String, Map<String, Integer>> statistics =
+                    Utility.createTaskStatistics(tasksManagement);
 
             if(statistics.isEmpty()){
                 statisticsOutputArea.append("No statistics available.\n");
@@ -270,7 +272,16 @@ public class MainFrame extends JFrame {
             }
 
             statisticsOutputArea.append("Task statistics:\n");
-            for(Map.Entry<String, Map<String, Integer>> entry : statistics.entrySet()){
+            List<Map.Entry<String, Map<String, Integer>>> list =
+                    new ArrayList<>(statistics.entrySet());
+
+            list.sort((e1, e2) -> {
+                int hours1 = tasksManagement.calculateEmployeeWorkDurationByName(e1.getKey());
+                int hours2 = tasksManagement.calculateEmployeeWorkDurationByName(e2.getKey());
+                return Integer.compare(hours1, hours2);
+            });
+
+            for(Map.Entry<String, Map<String, Integer>> entry : list){
                 statisticsOutputArea.append("Employee " + entry.getKey() + ":\n");
 
                 for(Map.Entry<String, Integer> stat : entry.getValue().entrySet()){
