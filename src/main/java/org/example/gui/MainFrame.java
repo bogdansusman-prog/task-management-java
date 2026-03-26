@@ -60,6 +60,7 @@ public class MainFrame extends JFrame {
 
 
     public MainFrame(TasksManagement tasksManagement) {
+        //in constructor initializam interfata grafica si modelele pentru componentele UI
         complexTaskComboBoxModel = new DefaultComboBoxModel<>();
         subTaskComboBoxModel = new DefaultComboBoxModel<>();
 
@@ -73,14 +74,20 @@ public class MainFrame extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
+        //las sa stochez date
+        //leg de gui
+        //update automat
         employeesListModel = new DefaultListModel<>();
         tasksListModel = new DefaultListModel<>();
 
+        //conectez UI-ul la date
+        //si se si face o actualizare automata
         employeesList.setModel(employeesListModel);
         tasksList.setModel(tasksListModel);
         complexTaskComboBox.setModel(complexTaskComboBoxModel);
         subTaskComboBox.setModel(subTaskComboBoxModel);
 
+        //de aici legam actiunile butoanelor de metodele corespunzatoare
         addEmployeeButton.addActionListener(e -> addEmployee());
         createSimpleTaskButton.addActionListener(e -> createSimpleTask());
         createComplexTaskButton.addActionListener(e -> createComplexTask());
