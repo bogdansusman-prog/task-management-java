@@ -27,7 +27,7 @@ public class Utility {
                 workedTime.add(new AbstractMap.SimpleEntry<>(entry.getKey(), total));
             }
         }
-        //sortez employees crescator avand in vedere workedTime( sau hours ca idee)
+        //sortez lista crescator avand in vedere workedTime( sau hours ca idee)
         workedTime.sort(Comparator.comparingInt(Map.Entry::getValue));
         //FAC O CONVERSIE LA LISTA CU EMPLOYEE
         List<Employee> result = new ArrayList<>();
@@ -63,7 +63,7 @@ public class Utility {
             statusMap.put("Completed", completed);
             statusMap.put("Uncompleted", uncompleted);
 
-            //folosesc numele ca si Key(asa se cere)
+            //folosesc numele ca si Key
             statistics.put(entry.getKey().getName(), statusMap);
         }
         return statistics;

@@ -65,8 +65,10 @@ public class TestApp {
         SerializationService service = new SerializationService();
 
         try{
+            //SALVEZ
             service.save(tasksManagement, "data.ser");
 
+            //INCARC
             TasksManagement loaded = service.load("data.ser");
 
             System.out.println("Loaded duration: " +
