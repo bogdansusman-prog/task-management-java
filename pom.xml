@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>PT2026_30224_Susman_Bogdan_Assignment_1</artifactId>
+    <artifactId>task-management</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
